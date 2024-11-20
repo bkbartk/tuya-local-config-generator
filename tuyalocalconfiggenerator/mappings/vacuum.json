@@ -1,3 +1,9 @@
 {
-
+  "mappings": [
+    {
+      "code": "switch",
+      "name": "power",
+      "isPrimary": true
+    }
+  ]
 }

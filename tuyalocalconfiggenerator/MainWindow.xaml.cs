@@ -36,6 +36,9 @@ namespace tuyalocalconfiggenerator
         {
             try
             {
+                var configJson = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/mappings/vacuum.json");
+                var config = System.Text.Json.JsonSerializer.Deserialize<Config>(configJson);
+
                 var jsonMain = System.Text.Json.JsonSerializer.Deserialize<JsonMain>(_MainSettings.Input);
                 var jsonSub = System.Text.Json.JsonSerializer.Deserialize<JsonSub>(jsonMain.result.model);
                 var output = new Classes.Output.Yaml();
@@ -44,6 +47,46 @@ namespace tuyalocalconfiggenerator
                 product.Id = "Prod Id";
                 product.Name = "Robot vacuum";
                 output.Products.Add(product);
+                foreach (var property in jsonSub.services.First().properties)
+                {
+
+                    var code = property.code;
+                    var configMapping = config.mappings.FirstOrDefault(m => m.code == code);
+                    if (configMapping != null && configMapping.isPrimary)
+                    {
+                        var dp = new PrimaryEntityDp();
+                        dp.Id = property.abilityId;
+                        dp.Name = configMapping.name;
+                        dp.Type = property.typeSpec.type;
+                        output.PrimaryEntity.Dps.Add(dp);
+
+                    }
+                    else if (configMapping != null)
+                    {
+                        var dp = new SecondaryEntityDp();
+                        dp.Id = property.abilityId;
+                        dp.Name = "sensor"; ;
+                        dp.Type = property.typeSpec.type;
+                        var entry = new SecondaryEntity();
+                        entry.Entity = "sensor";
+                        entry.Name = configMapping.name;
+                        entry.Dps.Add(dp);
+                        output.SecondaryEntities.Add(entry);
+                    }
+                    else
+                    {
+                        var dp = new SecondaryEntityDp();
+                        dp.Id = property.abilityId;
+                        dp.Name = "sensor"; ;
+                        dp.Type = property.typeSpec.type;
+                        var entry = new SecondaryEntity();
+                        entry.Entity = "sensor";
+                        entry.Name = property.code;
+                        entry.Dps.Add(dp);
+                        output.SecondaryEntities.Add(entry);
+                    }
+                }
+
 
                 var serializer = new YamlDotNet.Serialization.Serializer();
                 var yaml = new StringBuilder();
@@ -53,10 +96,11 @@ namespace tuyalocalconfiggenerator
                 serializer.Serialize(textWriter, output, output.GetType());
                 _MainSettings.Output = yaml.ToString();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 //TODO errorhandling
                 _MainSettings.Output = ex.ToString();
-            }     
+            }
         }
 
         private void Hotfix_Click(object sender, RoutedEventArgs e)
@@ -70,6 +114,21 @@ namespace tuyalocalconfiggenerator
         public string Input { get; set; }
         public string Output { get; set; }
     }
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    public class ConfigMapping
+    {
+        public string code { get; set; }
+        public string name { get; set; }
+        public bool isPrimary { get; set; }
+    }
+
+    public class Config
+    {
+        public List<ConfigMapping> mappings { get; set; }
+    }
+
+
+
 
     //main result
     public class JsonMainResult

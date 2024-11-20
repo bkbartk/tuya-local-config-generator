@@ -17,6 +17,7 @@ namespace tuyalocalconfiggenerator.Classes
             {
                 Products = new HashSet<Product>();
                 SecondaryEntities = new HashSet<SecondaryEntity>();
+                PrimaryEntity = new();
             }
             [JsonPropertyName("name")]
             public string Name { get; set; }
@@ -31,13 +32,17 @@ namespace tuyalocalconfiggenerator.Classes
             public ICollection<SecondaryEntity> SecondaryEntities { get; set; }
         }
 
-        public partial class PrimaryEntity
+        public class PrimaryEntity
         {
+            public PrimaryEntity()
+            {
+                Dps = new HashSet<PrimaryEntityDp>();
+            }
             [JsonPropertyName("entity")]
             public string Entity { get; set; }
 
             [JsonPropertyName("dps")]
-            public PrimaryEntityDp[] Dps { get; set; }
+            public ICollection<PrimaryEntityDp> Dps { get; set; }
         }
 
         public partial class PrimaryEntityDp
@@ -79,8 +84,12 @@ namespace tuyalocalconfiggenerator.Classes
             public string Name { get; set; }
         }
 
-        public partial class SecondaryEntity
+        public  class SecondaryEntity
         {
+            public SecondaryEntity()
+            {
+                Dps = new HashSet<SecondaryEntityDp>();
+            }
             [JsonPropertyName("entity")]
             public string Entity { get; set; }
 
@@ -88,7 +97,7 @@ namespace tuyalocalconfiggenerator.Classes
             public string Class { get; set; }
 
             [JsonPropertyName("dps")]
-            public SecondaryEntityDp[] Dps { get; set; }
+            public ICollection<SecondaryEntityDp> Dps { get; set; }
 
             [JsonPropertyName("name")]
             public string Name { get; set; }

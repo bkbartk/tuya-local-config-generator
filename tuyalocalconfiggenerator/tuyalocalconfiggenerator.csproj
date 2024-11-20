@@ -12,5 +12,11 @@
     <PackageReference Include="YamlDotNet" Version="16.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="mappings\vacuum.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>
