@@ -1,0 +1,16 @@
+﻿<Window x:Class="tuyalocalconfiggenerator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:tuyalocalconfiggenerator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TextBox AcceptsReturn="True" HorizontalAlignment="Left" Height="187" Margin="28,10,0,0" TextWrapping="Wrap" Text="{Binding Input}" Name="txtInput" VerticalAlignment="Top" Width="730"/>
+        <TextBox AcceptsReturn="True" HorizontalAlignment="Left" Height="187" Margin="28,237,0,0" TextWrapping="Wrap" Text="{Binding Output}"  Name="txtOutput" VerticalAlignment="Top" Width="730"/>
+        <Button Content="Vacuum" HorizontalAlignment="Left" Margin="28,0,0,0" VerticalAlignment="Center" Width="72" Name="txtVacuum" Click="txtVacuum_Click"/>
+        <Button Content="Hotfix" HorizontalAlignment="Left" Margin="131,0,0,0" VerticalAlignment="Center" Width="80" Click="Hotfix_Click" />
+
+    </Grid>
+</Window>
