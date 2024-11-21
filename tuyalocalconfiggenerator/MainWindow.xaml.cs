@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -44,7 +45,10 @@ namespace tuyalocalconfiggenerator
                 var dps_valmappings = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/mappings/mapping.json");
                 var dps_valmapping = System.Text.Json.JsonSerializer.Deserialize<Config>(dps_valmappings);
 
-                var jsonMain = System.Text.Json.JsonSerializer.Deserialize<JsonMain>(_MainSettings.Input);
+                var input =  Regex.Replace(_MainSettings.Input, @"\t|\n|\r", "");
+
+
+                var jsonMain = System.Text.Json.JsonSerializer.Deserialize<JsonMain>(input);
                 var jsonSub = System.Text.Json.JsonSerializer.Deserialize<JsonSub>(jsonMain.result.model);
                 var output = new Classes.Output.Yaml();
                 output.Name = "Robot vacuum";
