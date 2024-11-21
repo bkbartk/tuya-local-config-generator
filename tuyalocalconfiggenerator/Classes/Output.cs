@@ -47,6 +47,10 @@ namespace tuyalocalconfiggenerator.Classes
 
         public partial class PrimaryEntityDp
         {
+            public PrimaryEntityDp()
+            {
+                Mapping = new HashSet<Mapping>();
+            }
             [JsonPropertyName("id")]
             public long Id { get; set; }
 
@@ -60,7 +64,7 @@ namespace tuyalocalconfiggenerator.Classes
             public bool? Optional { get; set; }
 
             [JsonPropertyName("mapping")]
-            public List<Mapping>? Mapping { get; set; }
+            public ICollection<Mapping> Mapping { get; set; }
 
             [JsonPropertyName("hidden")]
             public bool? Hidden { get; set; }

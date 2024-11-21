@@ -4,6 +4,36 @@
       "code": "switch",
       "name": "power",
       "isPrimary": true
+    },
+    {
+      "code": "switch_go",
+      "name": "activate",
+      "isPrimary": true
+    },
+    {
+      "code": "mode",
+      "name": "command",
+      "isPrimary": true
+    },
+    {
+      "code": "direction_control",
+      "name": "direction_control",
+      "isPrimary": true
+    },
+    {
+      "code": "status",
+      "name": "status",
+      "isPrimary": true
+    },
+    {
+      "code": "seek",
+      "name": "locate",
+      "isPrimary": true
+    },
+    {
+      "code": "suction",
+      "name": "fan_speed",
+      "isPrimary": true
     }
   ]
 }

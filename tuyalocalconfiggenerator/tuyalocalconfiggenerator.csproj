@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="mappings\mapping.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="mappings\vacuum.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

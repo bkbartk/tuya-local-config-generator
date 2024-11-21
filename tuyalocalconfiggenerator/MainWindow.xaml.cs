@@ -41,6 +41,9 @@ namespace tuyalocalconfiggenerator
                 var configJson = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/mappings/vacuum.json");
                 var config = System.Text.Json.JsonSerializer.Deserialize<Config>(configJson);
 
+                var dps_valmappings = System.IO.File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}/mappings/mapping.json");
+                var dps_valmapping = System.Text.Json.JsonSerializer.Deserialize<Config>(dps_valmappings);
+
                 var jsonMain = System.Text.Json.JsonSerializer.Deserialize<JsonMain>(_MainSettings.Input);
                 var jsonSub = System.Text.Json.JsonSerializer.Deserialize<JsonSub>(jsonMain.result.model);
                 var output = new Classes.Output.Yaml();
@@ -59,7 +62,32 @@ namespace tuyalocalconfiggenerator
                         var dp = new PrimaryEntityDp();
                         dp.Id = property.abilityId;
                         dp.Name = configMapping.name;
-                        dp.Type = property.typeSpec.type; //TODO typerename
+                        switch (property.typeSpec.type)
+                        {
+                            case "bool":
+                                dp.Type = "boolean"; 
+                                break;
+                            case "enum":
+                                dp.Type = "string";
+                                var range = property.typeSpec.range;
+                                if(range != null)
+                                {
+                                    foreach(var str in range)
+                                    {
+                                        var mapping = new Mapping();
+                                        mapping.DpsVal = str;
+                                        mapping.Value = dps_valmapping.mappings.FirstOrDefault(m => m.code == str)?.name ?? str;
+                                        dp.Mapping.Add(mapping);
+                                    }
+                                }
+
+                                break;
+                            default:
+                                dp.Type = property.typeSpec.type; 
+                                break;
+                        }
+
+                       
                         output.PrimaryEntity.Dps.Add(dp);
 
                     }

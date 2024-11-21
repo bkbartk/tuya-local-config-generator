@@ -1,0 +1,16 @@
+{
+  "mappings": [
+    {
+      "code": "standby",
+      "name": "stop"
+    },
+    {
+      "code": "spiral",
+      "name": "stop"
+    },
+    {
+      "code": "chargego",
+      "name": "return_to_base"
+    }
+  ]
+}
