@@ -60,7 +60,7 @@ namespace tuyalocalconfiggenerator.Classes
             public bool? Optional { get; set; }
 
             [JsonPropertyName("mapping")]
-            public Mapping[] Mapping { get; set; }
+            public List<Mapping>? Mapping { get; set; }
 
             [JsonPropertyName("hidden")]
             public bool? Hidden { get; set; }

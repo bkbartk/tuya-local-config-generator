@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,7 +59,7 @@ namespace tuyalocalconfiggenerator
                         var dp = new PrimaryEntityDp();
                         dp.Id = property.abilityId;
                         dp.Name = configMapping.name;
-                        dp.Type = property.typeSpec.type;
+                        dp.Type = property.typeSpec.type; //TODO typerename
                         output.PrimaryEntity.Dps.Add(dp);
 
                     }
@@ -87,8 +89,11 @@ namespace tuyalocalconfiggenerator
                     }
                 }
 
+                var serializer = new YamlDotNet.Serialization.SerializerBuilder()
+                    .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)
+                    .Build();
 
-                var serializer = new YamlDotNet.Serialization.Serializer();
+                //var serializer = new YamlDotNet.Serialization.Serializer();
                 var yaml = new StringBuilder();
 
                 await using var textWriter = new StringWriter(yaml);
@@ -102,17 +107,32 @@ namespace tuyalocalconfiggenerator
                 _MainSettings.Output = ex.ToString();
             }
         }
-
-        private void Hotfix_Click(object sender, RoutedEventArgs e)
-        {
-            txtOutput.Text = _MainSettings.Output;
-        }
     }
 
-    public class MainSettings
+    public class MainSettings : INotifyPropertyChanged
     {
         public string Input { get; set; }
-        public string Output { get; set; }
+
+        private string _output;
+        public string Output
+        {
+            get { return _output; }
+            set
+            {
+                _output = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // This method is called by the Set accessor of each property.  
+        // The CallerMemberName attribute that is applied to the optional propertyName  
+        // parameter causes the property name of the caller to be substituted as an argument.  
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class ConfigMapping
